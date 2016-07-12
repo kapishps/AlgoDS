@@ -1,63 +1,47 @@
-#include <vector>
-#include <iostream>
-#include <algorithm>
+/*The Node struct is defined as follows:
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+}
+*/
 
-using namespace std;
+// https://www.hackerrank.com/challenges/is-binary-search-tree
 
-typedef pair<int,int> edge;
-const int MAXN=5000;
-vector<pair<int, edge>> edgelist;
-int parent[MAXN+1],rnk[MAXN+1];
-int total=0;
+//2nd Solution (better)
+bool checkBSTUtil(struct Node* node, int min, int max) {
+    if (node==NULL)
+        return true;
 
-int findset(int x) {
-    if(x != parent[x])
-        parent[x] = findset(parent[x]);
-    return parent[x];
+    if (node->data < min || node->data > max)
+        return false;
+
+    return checkBSTUtil(node->left, min, node->data-1) && checkBSTUtil(node->right, node->data+1, max);
 }
 
-void unionset(int x, int y){
-    x = findset(x), y = findset(y);
-    if (rnk[x] > rnk[y])
-        parent[y] = x;
-    else
-        parent[x] = y;
-    if (rnk[x] == rnk[y])
-        rnk[y]++;
+bool checkBST(Node* root) {
+    return (checkBSTUtil(root, -1, 1000000));
 }
 
-void Kruskal(){
-    sort(edgelist.begin(),edgelist.end());
-    for (int i = 0; i < edgelist.size(); ++i) {
-        int pu= findset(edgelist[i].second.first);
-        int pv= findset(edgelist[i].second.second);
-        if(pu != pv){
-//            mst.push_back(edgelist[i]);
-            total+=edgelist[i].first;
-            unionset(pu,pv);
-        }
-    }
-}
 
-//https://www.hackerearth.com/problem/algorithm/3-types/
-
-int main() {
-    int n,m;
-    cin>>n>>m;
-    for(int i=0;i<m;i++){
-        int x,y,w;
-        cin>>x>>y>>w;
-        x--;y--;
-        w=-w;
-        edgelist.push_back(pair<int,edge>(w,edge(x,y)));
-    }
-    for(int i=0; i<=n; i++){
-        parent[i]=i;
-        rnk[i]=0;
-    }
-    total=0;
-    Kruskal();
-    cout<<-total<<endl;
-    edgelist.clear();
-    return 0;
-}
+//1st Solution
+//void inorderrecursive(Node *root,vector<int> &v) {
+//    if(root!=NULL) {
+//        inorderrecursive(root->left,v);
+//        v.push_back(root->data);
+//        inorderrecursive(root->right,v);
+//    }
+//}
+//bool checkBST(Node* root) {
+//    if(root!=NULL){
+//        vector<int> v;
+//        inorderrecursive(root,v);
+//        for(int i=1;i<v.size();i++){
+//            if(v[i-1]>=v[i])
+//                return false;
+//        }
+//        return true;
+//    }
+//    else
+//        return true;
+//}
