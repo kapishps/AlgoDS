@@ -3,7 +3,7 @@
 #include <algorithm>
 using namespace std;
 
-#define edge pair<int,int>
+typedef pair<int,int> edge;
 
 vector<pair<int, edge>> edgelist,mst;
 int parent[3001],rnk[3001];
