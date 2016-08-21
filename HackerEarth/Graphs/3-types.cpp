@@ -7,7 +7,7 @@ using namespace std;
 typedef pair<int,int> edge;
 
 const int MAXN=1010;
-vector<pair<int, edge>> men,women,mst;
+vector<pair<int, edge>> men,women;
 int parent[MAXN+1],rnk[MAXN+1];
 map<int,int> map1;
 
@@ -43,7 +43,7 @@ void Kruskal(vector<pair<int, edge>> &edgelist){
         int pv= findset(edgelist[i].second.second);
         if(pu != pv){
             map1[-edgelist[i].first]++;
-            mst.push_back(edgelist[i]);
+//            mst.push_back(edgelist[i]);
 //            total+=edgelist[i].first;
             unionset(pu,pv);
         }
@@ -70,16 +70,15 @@ int main() {
     int ans=0;
     initializeset(n);
     Kruskal(men);
-    if(mst.size()!=n-1){
+    if(map1[3]+map1[1]!=n-1){
         cout<<"-1";
         return 0;
     }
     ans+=map1[3]+map1[1];
-    mst.clear();
     map1.clear();
     initializeset(n);
     Kruskal(women);
-    if(mst.size()!=n-1){
+    if(map1[3]+map1[2]!=n-1){
         cout<<"-1";
         return 0;
     }
