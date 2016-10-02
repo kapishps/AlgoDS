@@ -13,53 +13,31 @@ typedef pair<int,int> pii;
 #define pb push_back
 #define mp make_pair
 
-const int inf = INFINITY;
+const int inf = 2147483647;
 const int MOD = 1e9+7;
-const int MAXN = 1e6+5;
+const int MAXN = 1e6+9;
 
-ll coins1(int a[],int n,int change){
-    //1st Method (mine)
-    sort(a,a+n);
-    ll dp[n+1][change+1];
-    for (int i = 0; i <=change; ++i) {
-        dp[0][i] = inf;
-    }
-    dp[0][0]=0;
-    for (int i = 1; i <=n; ++i) {
-        for (int j = 0; j <= change; ++j) {
-            dp[i][j] = min(dp[i-1][j], (j/a[i-1]) + dp[i-1][j%a[i-1]]);
-        }
-    }
-    return dp[n][change];
+int solve(int a[],int b[],int n){
+
 }
 
-ll coins2(int a[],int n,int change){
-    //2nd space optimised method
-    sort(a,a+n);
-    ll dp[change+1];
-    for (int i = 0; i <=change; ++i) {
-        dp[i] = inf;
-    }
-    dp[0]=0;
-    for (int i = 1; i <=change; ++i) {
-        for (int j = 0; j < n; ++j) {
-            if(a[j]<=i){
-                dp[i] = min(dp[i],dp[i-a[j]]+1);
-            }
-        }
-    }
-    return dp[change];
-}
+//http://www.spoj.com/problems/BRIDGE/
 
 int main() {
-//    Boost;
-    int change,n;
-    cin>>change>>n;
-    int a[n];
-    for(int i=0;i<n;i++){
-        cin>>a[i];
+    Boost;
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        int a[n],b[n];
+        for (int i = 0; i < n; ++i) {
+            cin>>a[i];
+        }
+        for (int i = 0; i < n; ++i) {
+            cin>>b[i];
+        }
+        cout<<solve(a,b,n)<<"\n";
     }
-    cout<<coins1(a,n,change)<<"\n";
-    cout<<coins2(a,n,change)<<"\n";
     return 0;
 }

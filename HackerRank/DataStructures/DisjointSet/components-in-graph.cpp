@@ -1,11 +1,25 @@
 #include <iostream>
 #include <algorithm>
+#include <map>
+#include <vector>
 #include <set>
+
 using namespace std;
 
-int parent[100001],rnk[100001];
-set<pair<int,int> > s;
-set<pair<int,int> > :: iterator it;
+typedef long long ll;
+typedef long double ld;
+typedef pair<int,int> pii;
+#define Boost ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define pb push_back
+#define mp make_pair
+
+const int inf = 2147483647;
+const int MOD = 1e9+7;
+const int MAXN = 1e6+9;
+
+int parent[MAXN],rnk[MAXN];
+set<pii > s;
+set<pii > :: iterator it;
 
 int findset(int x) {
     if(x != parent[x])
@@ -31,35 +45,34 @@ void unionset(int x, int y){
     }
 }
 
+void initialiseset(int start, int end){
+    for (int i = start; i<=end; ++i) {
+        parent[i]=i;
+        rnk[i]=1;
+        s.insert(make_pair(1,i));
+    }
+}
+
 //https://www.hackerrank.com/challenges/components-in-graph
 
 int main() {
-    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    Boost;
     int n;
     cin>>n;
-    for (int i = 1; i<=2*n; ++i) {
-        parent[i]=i;
-        rnk[i]=-1;
-    }
+
+    initialiseset(1,2*n);
+
     for (int i = 0; i < n; ++i) {
         int a,b;
         cin>>a>>b;
-        if(rnk[findset(a)]<0){
-            s.insert(make_pair(1,a));
-            rnk[a]=1;
-        }
-        if(rnk[findset(b)]<0){
-            s.insert(make_pair(1,b));
-            rnk[b]=1;
-        }
         unionset(a,b);
     }
-    int sm,l;
+    int smallest=1,largest;
     it=s.begin();
-    sm=it->first;
+    while(smallest==1)
+        smallest = (*(++it)).first;
     it=s.end();
-    it--;
-    l=it->first;
-    cout<<sm<<" "<<l;
+    largest = (--it)->first;
+    cout<<smallest<<" "<<largest;
     return 0;
 }

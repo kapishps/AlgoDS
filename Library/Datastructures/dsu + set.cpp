@@ -18,6 +18,8 @@ const int MOD = 1e9+7;
 const int MAXN = 1e6+9;
 
 int parent[MAXN],rnk[MAXN];
+set<pair<int,int> > s;
+set<pair<int,int> > :: iterator it;
 
 int findset(int x) {
     if(x != parent[x])
@@ -26,15 +28,19 @@ int findset(int x) {
 }
 
 void unionset(int x, int y){
-    int px = findset(x), py = findset(y);
+    int px = findset(x),py = findset(y);
     if(px!=py){
+        s.erase(make_pair(rnk[px],px));
+        s.erase(make_pair(rnk[py],py));
         if (rnk[px] > rnk[py]){
-            parent[py]=px;
+            parent[py] = px;
             rnk[px]+=rnk[py];
+            s.insert(make_pair(rnk[px],px));
         }
         else{
-            parent[px]= py;
+            parent[px] = py;
             rnk[py]+=rnk[px];
+            s.insert(make_pair(rnk[py],py));
         }
     }
 }
@@ -43,31 +49,30 @@ void initialiseset(int start, int end){
     for (int i = start; i<=end; ++i) {
         parent[i]=i;
         rnk[i]=1;
+        s.insert(make_pair(1,i));
     }
 }
 
-//https://www.hackerrank.com/challenges/merging-communities
+//https://www.hackerrank.com/challenges/components-in-graph
 
 int main() {
     Boost;
-    int n,q;
-    cin>>n>>q;
+    int n;
+    cin>>n;
 
-    initialiseset(0,n);
+    initialiseset(1,2*n);
 
-    for (int i = 0; i < q; ++i) {
-        char c;
-        cin>>c;
-        if(c=='M'){
-            int a,b;
-            cin>>a>>b;
-            unionset(a,b);
-        }
-        else{
-            int a;
-            cin>>a;
-            cout<<rnk[findset(a)]<<"\n";
-        }
+    for (int i = 0; i < n; ++i) {
+        int a,b;
+        cin>>a>>b;
+        unionset(a,b);
     }
+    int smallest=1,largest;
+    it=s.begin();
+    while(smallest==1)
+        smallest = (*(++it)).first;
+    it=s.end();
+    largest = (--it)->first;
+    cout<<smallest<<" "<<largest;
     return 0;
 }
