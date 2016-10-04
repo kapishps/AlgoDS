@@ -1,43 +1,19 @@
 #include <iostream>
 #include <algorithm>
-#include <map>
 #include <vector>
-#include <set>
-
+#include <unordered_set>
 using namespace std;
 
-typedef long long ll;
-typedef long double ld;
-typedef pair<int,int> pii;
-#define Boost ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
-#define pb push_back
-#define mp make_pair
-
-const int inf = 2147483647;
-const int MOD = 1e9+7;
-const int MAXN = 1e6+9;
-
-int solve(int a[],int b[],int n){
-
-}
-
-//http://www.spoj.com/problems/BRIDGE/
-
 int main() {
-    Boost;
-    int t;
-    cin>>t;
-    while(t--){
-        int n;
-        cin>>n;
-        int a[n],b[n];
-        for (int i = 0; i < n; ++i) {
-            cin>>a[i];
+    int n;
+    cin>>n;
+    unordered_set<int> s;
+    for (int i = 2; i < n; ++i) {
+        for (int j = i+1; j < n; ++j) {
+            if(__gcd(i,j)==1)
+                s.insert(i*j);
         }
-        for (int i = 0; i < n; ++i) {
-            cin>>b[i];
-        }
-        cout<<solve(a,b,n)<<"\n";
     }
+    cout<<s.size();
     return 0;
 }
