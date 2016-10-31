@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <bitset>
 
 using namespace std;
 
@@ -17,101 +18,99 @@ const int inf = 2147483647;
 const int MOD = 1e9+7;
 const int MAXN = 1e5+9;
 
-class Matrix {
-public:
-    int N;
-    ll M[3][3];
+bitset<10000010> prime;
 
-    Matrix() {
-        N = 3;
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-                M[i][j] = 0;
-            }
+void SieveOfEratosthenes(ll n) {
+    prime.set();
+    prime[0] = prime[1] = 0;
+    for (ll i = 2; i * i <= n; i++) {
+        if (prime[i]) {
+            for (ll j = i * 2; j <= n; j += i)
+                prime[j] = 0;
         }
     }
-
-    Matrix(int _N, int ok) {
-        N = _N;
-        for(int i = 0; i < N && ok == 0; i++) {
-            for(int j = 0; j < N; j++) {
-                M[i][j] = 0;
-            }
-        }
-        for(int i = 0; i < N && ok == 1; i++) {
-            for(int j = 0; j < N; j++) {
-                M[i][j] = 0;
-            }
-            M[i][i] = 1;
-        }
-    }
-    void add(Matrix Y) {
-        for(int i = 0; i < N; i++) {
-            for(int j = 0; j < N; j++) {
-                M[i][j] = (M[i][j] + Y.M[i][j]);
-                if(M[i][j] > MOD)
-                    M[i][j] -= MOD;
-            }
-        }
-    }
-};
-
-Matrix operator*(Matrix X, Matrix Y) {
-    int N = X.N;
-    Matrix Z(N,-1);
-    for(int i = 0; i < N; i++) {
-        for(int j = 0; j < N; j++) {
-            Z.M[i][j] = 0;
-            for(int k = 0; k < N; k++) {
-                Z.M[i][j] += (X.M[i][k] * Y.M[k][j]) % MOD;
-                Z.M[i][j] %= MOD;
-            }
-        }
-    }
-    return Z;
 }
 
-Matrix operator^(Matrix X, ll power) {
-    Matrix res(X.N,1);
-    while(power) {
-        if(power & 1) {
-            res = res * X;
+//Modular Multiplication
+ll mul_mod(ll a, ll b, ll M = MOD) {        //(a * b) % M
+    if (a < b)
+        swap(a, b);
+    ll res = 0, x = a;
+    while (b > 0) {
+        if (b & 1) {
+            res = (res + x)%M;
         }
-        X = X * X;
-        power >>= 1;
+        x = (x * 2)%M;
+        b >>= 1LL;
+    }
+    return res % M;
+}
+
+//Modular Exponentiation
+ll power_mod(ll a, ll p, ll M = MOD) {      //n^p % M
+    ll x = a, res = 1;
+    while (p) {
+        if (p & 1)
+            res = mul_mod(res, x, M);
+        x = mul_mod(x, x, M);
+        p >>= 1LL;
     }
     return res;
 }
 
-Matrix operator+(Matrix X, Matrix Y) {
-    for(int i = 0; i < X.N; i++) {
-        for(int j = 0; j < X.N; j++) {
-            X.M[i][j] = (X.M[i][j] + Y.M[i][j]);
-            if(X.M[i][j] > MOD) X.M[i][j] -= MOD;
-        }
-    }
-    return X;
+ll GCD(ll a, ll b) {
+    if(b==0)
+        return a;
+    else
+        return GCD(b, a % b);
 }
 
-Matrix M(2,0);
+ll LCM(ll a, ll b) {
+    return (a*b)/GCD(a, b);
+}
+
+ll d, x, y;
+void extendedEuclid(ll a, ll b) {       //Ax + By = GCD(A, B) = d
+    if(b == 0) {
+        d = a;
+        x = 1;
+        y = 0;
+    }
+    else {
+        extendedEuclid(b, a%b);
+        ll temp = x;
+        x = y;
+        y = temp - (a/b)*y;
+    }
+}
+
+//Modular Multiplicative Inverse
+ll modulo_Inv(ll a, ll M) {         //using Extended Euclidean Algorithm
+    extendedEuclid(a, M);
+    return (x % M + M) % M;     //x may be negative
+}
+
+//Modular Multiplicative Inverse (Applicable only when M is prime)
+ll modulo_inv(ll n, ll M){      //using Fermat's Little Theorem.
+    return power_mod(n, M - 2, M);
+}
+
+/*
+Modular Arithmetic
+    1. (a+b)%c = (a%c + b%c )%c
+    2. (a * b)%c = ((a%c) * (b%c))%c
+    3. (a - b)%c = ((a%c) - (b%c) +c) %c
+    4. (a / b)%c = ((a%c) * (inv(b) %c))%c
+inv(b) is the multiplicative modulo inverse of b with c
+*/
 
 int main() {
-    Boost;
-    int t;
-    cin>>t;
-    M.M[0][0] = M.M[0][1] = M.M[1][0] = 1;
-    while(t--) {
-        int n;
-        cin >> n;
-        Matrix S(2, 0);
-        Matrix ans(2, 0);
-        ll x;
-        for (int i = 0; i < n; ++i) {
-            cin >> x;
-            Matrix T = M ^x;
-            S = T * S + T;
-            ans = ans + S;
-        }
-        cout << ans.M[0][1] % MOD << "\n";
+    ll n;
+    cin >> n;
+    SieveOfEratosthenes(n);
+    for (int i = 0; i < n; ++i) {
+        if (prime[i])
+            cout << i << " ";
     }
+    return 0;
 }
