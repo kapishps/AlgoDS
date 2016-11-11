@@ -3,7 +3,6 @@
 #include <map>
 #include <vector>
 #include <set>
-#include <bitset>
 
 using namespace std;
 
@@ -18,99 +17,84 @@ const int inf = 2147483647;
 const int MOD = 1e9+7;
 const int MAXN = 1e5+9;
 
-bitset<10000010> prime;
+bool isodd(int n){
+    return n%2;
+}
 
-void SieveOfEratosthenes(ll n) {
-    prime.set();
-    prime[0] = prime[1] = 0;
-    for (ll i = 2; i * i <= n; i++) {
-        if (prime[i]) {
-            for (ll j = i * 2; j <= n; j += i)
-                prime[j] = 0;
+bool iseven(int n){
+    return !isodd(n);
+}
+
+void solve(int a[],int n){
+    int i=0,j=1;
+    while (i<n && j<n){
+        if(isodd(a[i]) && iseven(a[j])){
+            i+=2;
+            j+=2;
+        }
+        else if(isodd(a[j]) && iseven(a[i])){
+            swap(a[i],a[j]);
+            i+=2;
+            j+=2;
+        }
+        else{
+            if(iseven(a[i])){
+                swap(a[i],a[j]);
+                j+=1;
+            }
+            else{
+                swap(a[i],a[j]);
+                i+=1;
+            }
+        }
+//        cout<<"j";
+    }
+}
+
+void solution(int a[],int n){
+    int even =0,odd =1;
+    while(even < n && odd < n){
+        while(a[even]%2==0)
+            even += 2;
+            while (a[odd] % 2 == 1)
+                odd += 2;
+
+            if (even !=n-1 || odd != n-1)
+                swap(a[even], a[odd]);
         }
     }
-}
 
-//Modular Multiplication
-ll mul_mod(ll a, ll b, ll M = MOD) {        //(a * b) % M
-    if (a < b)
-        swap(a, b);
-    ll res = 0, x = a;
-    while (b > 0) {
-        if (b & 1) {
-            res = (res + x)%M;
-        }
-        x = (x * 2)%M;
-        b >>= 1LL;
+void arrangeArray (int a[], int size)
+{
+    int oddInd = 1;
+    int evenInd = 0;
+    while (true)
+    {
+        while (evenInd < size && a[evenInd]%2 == 0)
+            evenInd += 2;
+        while (oddInd < size && a[oddInd]%2 == 1)
+            oddInd += 2;
+        if (evenInd < size && oddInd < size)
+            swap (a[evenInd], a[oddInd]);
+        else
+            break;
     }
-    return res % M;
+
 }
 
-//Modular Exponentiation
-ll power_mod(ll a, ll p, ll M = MOD) {      //n^p % M
-    ll x = a, res = 1;
-    while (p) {
-        if (p & 1)
-            res = mul_mod(res, x, M);
-        x = mul_mod(x, x, M);
-        p >>= 1LL;
-    }
-    return res;
-}
 
-ll GCD(ll a, ll b) {
-    if(b==0)
-        return a;
-    else
-        return GCD(b, a % b);
-}
-
-ll LCM(ll a, ll b) {
-    return (a*b)/GCD(a, b);
-}
-
-ll d, x, y;
-void extendedEuclid(ll a, ll b) {       //Ax + By = GCD(A, B) = d
-    if(b == 0) {
-        d = a;
-        x = 1;
-        y = 0;
-    }
-    else {
-        extendedEuclid(b, a%b);
-        ll temp = x;
-        x = y;
-        y = temp - (a/b)*y;
-    }
-}
-
-//Modular Multiplicative Inverse
-ll modulo_Inv(ll a, ll M) {         //using Extended Euclidean Algorithm
-    extendedEuclid(a, M);
-    return (x % M + M) % M;     //x may be negative
-}
-
-//Modular Multiplicative Inverse (Applicable only when M is prime)
-ll modulo_inv(ll n, ll M){      //using Fermat's Little Theorem.
-    return power_mod(n, M - 2, M);
-}
-
-/*
-Modular Arithmetic
-    1. (a+b)%c = (a%c + b%c )%c
-    2. (a * b)%c = ((a%c) * (b%c))%c
-    3. (a - b)%c = ((a%c) - (b%c) +c) %c
-    4. (a / b)%c = ((a%c) * (inv(b) %c))%c
-inv(b) is the multiplicative modulo inverse of b with c
-*/
 
 int main() {
-    ll n;
-    cin >> n;
-    SieveOfEratosthenes(n);
+//    Boost;
+    int n;
+    cin>>n;
+    int a[n];
     for (int i = 0; i < n; ++i) {
-        if (prime[i])
-            cout << i << " ";
+        cin>>a[i];
+    }
+    arrangeArray(a,n);
+    for (int j = 0; j < n; ++j) {
+        cout<<a[j]<<" ";
     }
     return 0;
 }

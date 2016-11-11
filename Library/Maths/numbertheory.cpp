@@ -91,7 +91,7 @@ ll modulo_Inv(ll a, ll M) {         //using Extended Euclidean Algorithm
 }
 
 //Modular Multiplicative Inverse (Applicable only when M is prime)
-ll modulo_inv(ll n, ll M){      //using Fermat's Little Theorem.
+ll modulo_inv(ll n, ll M = MOD){      //using Fermat's Little Theorem.
     return power_mod(n, M - 2, M);
 }
 
