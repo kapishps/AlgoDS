@@ -1,13 +1,22 @@
-#include <vector>
 #include <iostream>
 #include <algorithm>
-#include <climits>
+#include <map>
+#include <vector>
+#include <set>
 #include <queue>
+
 using namespace std;
 
-const int v=3001;
-int dist[v];
-bool vis[v]={0};
+typedef long long ll;
+typedef long double ld;
+typedef pair<int,int> pii;
+#define Boost ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define pb push_back
+#define mp make_pair
+
+const int inf = 2147483647;
+const int MOD = 1e9+7;
+const int MAXN = 1e5+9;
 
 //earlier made pq.push(make_pair(src,dist[src]=0)); thus was using this now using greater.
 //struct compare{
@@ -16,54 +25,56 @@ bool vis[v]={0};
 //    }
 //};
 
-void dijkstra(vector<pair<int ,int> > graph[],int n,int src){
-    for(int i=0;i<v;i++){
-        dist[i]=INT_MAX;
-        vis[i]=false;
+void dijkstra(vector<pii> graph[],ll dist[],bool visited[],int n,int s) {
+    for (int i = 0; i <= n; i++) {
+        dist[i] = inf;
+        visited[i] = 0;
     }
-    priority_queue<pair<int,int>,vector<pair<int,int> >,greater<pair<int,int> > > pq;
-    pq.push(make_pair(dist[src]=0,src));
-    while (!pq.empty()){
-        pair<int ,int> curr=pq.top();
+    priority_queue<pii, vector<pii>, greater<pii> > pq;
+    pq.push(mp(0, s));
+    dist[s] = 0;
+    while (!pq.empty()) {
+        pii parent = pq.top();
+        int pu = parent.second, pw = parent.first;
         pq.pop();
-        int cv=curr.second,cw=curr.first;
-        if(!vis[cv]){
-            vis[cv]= true;
-            for (int i = 0; i < graph[cv].size(); ++i) {
-                if(!vis[graph[cv][i].first] && graph[cv][i].second+cw < dist[graph[cv][i].first]) {
-                    dist[graph[cv][i].first]=graph[cv][i].second+cw;
-                    pq.push(make_pair(dist[graph[cv][i].first],graph[cv][i].first));
+        if(!visited[pu]) {
+            visited[pu] = 1;
+            for (auto i:graph[pu]) {
+                if (!visited[i.second] && dist[i.second] > pw + i.first) {
+                    dist[i.second] = pw + i.first;
+                    pq.push(mp(dist[i.second], i.second));
                 }
             }
         }
     }
 }
 
-//https://www.hackerrank.com/challenges/dijkstrashortreach
-
 int main() {
-    int t;
-    cin>>t;
-    while(t--){
+    Boost;
+    int q;
+    cin>>q;
+    while(q--){
         int n,m;
         cin>>n>>m;
-        vector<pair<int ,int>> graph[3001];
+        vector<pii> graph[n+1];
         for(int i=0;i<m;i++){
-            int x,y,r;
-            cin>>x>>y>>r;
-            graph[x].push_back(make_pair(y,r));
-            graph[y].push_back(make_pair(x,r));
+            int x,y,w;
+            cin>>x>>y>>w;
+            graph[x].push_back(mp(w,y));
+            graph[y].push_back(mp(w,x));
         }
         int s;
         cin>>s;
-        dijkstra(graph,n,s);
+        ll dist[n+1];
+        bool visited[n + 1];
+        dijkstra(graph,dist,visited,n,s);
         for (int i = 1; i <=n ; ++i) {
-            if(dist[i]!=INT_MAX && dist[i]!=0)
-                cout<<dist[i]<<" ";
-            if(vis[i]==false)
+            if(visited[i]==false)
                 cout<<"-1"<<" ";
+            else if(i!=s)
+                cout<<dist[i]<<" ";
         }
-        cout<<endl;
+        cout<<"\n";
     }
     return 0;
 }

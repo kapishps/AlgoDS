@@ -61,8 +61,7 @@ ll power_mod(ll a, ll p, ll M = MOD) {      //n^p % M
 ll GCD(ll a, ll b) {
     if(b==0)
         return a;
-    else
-        return GCD(b, a % b);
+    return GCD(b, a % b);
 }
 
 ll LCM(ll a, ll b) {

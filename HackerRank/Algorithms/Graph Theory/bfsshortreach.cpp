@@ -1,97 +1,69 @@
-#include <cmath>
-#include <cstdio>
-#include <vector>
 #include <iostream>
 #include <algorithm>
+#include <map>
+#include <vector>
+#include <set>
 #include <queue>
+
 using namespace std;
 
-//https://www.hackerrank.com/challenges/bfsshortreach/
+typedef long long ll;
+typedef long double ld;
+typedef pair<int,int> pii;
+#define Boost ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define pb push_back
+#define mp make_pair
 
-struct adjlistnode{
-    int dest;
-    adjlistnode *next;
-};
+const int inf = 2147483647;
+const int MOD = 1e9+7;
+const int MAXN = 1e5+9;
 
-struct adjlist{
-    adjlistnode *head;
-};
 
-struct Graph{
-    int v;
-    adjlist *array;
-};
-
-adjlistnode *newadjlistnode(int dest){
-    adjlistnode *newnode= new adjlistnode;
-    newnode->dest=dest;
-    newnode->next=NULL;
-    return newnode;
-}
-
-Graph *creategraph(int v){
-    Graph *graph=new Graph;
-    graph->v=v;
-    graph->array=new adjlist[v];
-    for (int i = 0; i < v; ++i) {
-        graph->array[i].head=NULL;
+void bfs(vector<int> graph[],int dist[],int n,int s){
+    bool visited[n+1];
+    for(int i=0;i<=n;i++){
+        dist[i]=-1;
+        visited[i]=0;
     }
-    return graph;
-}
-
-void addedge(Graph *graph,int src,int dest){
-    adjlistnode *node=newadjlistnode(dest);
-    node->next=graph->array[src].head;
-    graph->array[src].head=node;
-    // Since graph is undirected, add an edge from dest to src also
-    node=newadjlistnode(src);
-    node->next=graph->array[dest].head;
-    graph->array[dest].head=node;
-}
-
-void bfs(Graph *graph,int v,int start){
-    int visited[v];
-    for (int i = 0; i < v; ++i)
-        visited[i]= -1;
-    queue<int> q;
-    visited[start]= 0;
-    q.push(start);
-    while (!q.empty()){
-        adjlistnode *current=graph->array[q.front()].head;
-        int parent=q.front();
-        while(current){
-            if(visited[current->dest]==-1) {
-                q.push(current->dest);
-                visited[current->dest]=visited[parent]+6;
+    queue<int> qu;
+    qu.push(s);
+    dist[s]=0;
+    while(!qu.empty()){
+        int curr=qu.front();
+//        visited[curr]=1;
+        for(auto it:graph[curr]){
+            if(!visited[it]){
+                dist[it] = dist[curr]+6;
+                visited[it]=1;                  //Imp to place here
+                qu.push(it);
             }
-            current = current->next;
         }
-        q.pop();
+        qu.pop();
     }
-    for(int i=0;i<v;i++){
-        if(visited[i]!=0)
-            cout<<visited[i]<<" ";
-    }
-    return;
 }
 
 int main() {
-    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
-    int t;
-    cin>>t;
-    for(int i=0;i<t;i++){
+    int q;
+    cin>>q;
+    while(q--){
         int n,m;
         cin>>n>>m;
-        Graph *graph=creategraph(n);
-        for(int j=0;j<m;j++){
-            int a,b;
-            cin>>a>>b;
-            addedge(graph,a-1,b-1);
+        vector<int> graph[n+1];
+        for(int i=0;i<m;i++){
+            int x,y;
+            cin>>x>>y;
+            graph[x].push_back(y);
+            graph[y].push_back(x);
         }
-        int start;
-        cin>>start;
-        bfs(graph,n,start-1);
-        cout<<endl;
+        int s;
+        cin>>s;
+        int dist[n+1];
+        bfs(graph,dist,n,s);
+        for(int i=1;i<=n;i++){
+            if(i!=s)
+                cout<<dist[i]<<" ";
+        }
+        cout<<"\n";
     }
     return 0;
 }

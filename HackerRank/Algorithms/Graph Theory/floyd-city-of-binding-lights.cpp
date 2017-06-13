@@ -1,22 +1,40 @@
 #include <iostream>
-#include <climits>
+#include <algorithm>
+#include <map>
+#include <vector>
+#include <set>
+
 using namespace std;
 
-const int v=401;
-long dist[v][v];
+typedef long long ll;
+typedef long double ld;
+typedef pair<int,int> pii;
+#define Boost ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
+#define pb push_back
+#define mp make_pair
 
-void FloydWarshall(int graph[][v],int n){
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            dist[i][j]=graph[i][j];
+const int inf = 2147483647;
+const int MOD = 1e9+7;
+const int MAXN = 1e5+9;
+
+ll graph[405][405],dist[405][405];
+
+void floyd_warshall(int n) {
+    for (int i = 0; i <= n; ++i) {
+        for (int j = 0; j <= n; ++j) {
+            if (i == j)
+                dist[i][j] = 0;
+            else if(graph[i][j] != 0)
+                dist[i][j] = graph[i][j];
+            else
+                dist[i][j] = inf;
         }
     }
-    for (int k = 0; k < n; k++) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (dist[i][j]>dist[i][k]+dist[k][j]){
-                    dist[i][j]=dist[i][k]+dist[k][j];
-                }
+    for (int k = 0; k < n; ++k) {
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                if (dist[i][j] > dist[i][k] + dist[k][j])
+                    dist[i][j] = dist[i][k] + dist[k][j];
             }
         }
     }
@@ -25,33 +43,24 @@ void FloydWarshall(int graph[][v],int n){
 //https://www.hackerrank.com/challenges/floyd-city-of-blinding-lights/
 
 int main() {
-    int n,m;
-    cin>>n>>m;
-    int graph[n][v];
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            if(i==j)
-                graph[i][j]=0;
-            else
-                graph[i][j]=INT_MAX;
-        }
+    Boost;
+    int n, m;
+    cin >> n >> m;
+    for (int i = 0; i < m; i++) {
+        int x, y, w;
+        cin >> x >> y >> w;
+        graph[x-1][y-1] = w;
     }
-
-    for (int i = 0; i < m; ++i) {
-        int x,y,w;
-        cin>>x>>y>>w;
-        graph[x-1][y-1]=w;
-    }
-    FloydWarshall(graph,n);
+    floyd_warshall(n);
     int q;
     cin>>q;
-    for(int i=0;i<q;i++){
-        int a,b;
-        cin>>a>>b;
-        if(dist[a-1][b-1]==INT_MAX)
-            cout<<"-1"<<endl;
+    while (q--){
+        int x,y;
+        cin>>x>>y;
+        if(dist[x-1][y-1]==inf)
+            cout<<-1<<"\n";
         else
-            cout<<dist[a-1][b-1]<<endl;
+            cout<<dist[x-1][y-1]<<"\n";
     }
     return 0;
 }

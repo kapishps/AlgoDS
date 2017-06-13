@@ -49,6 +49,18 @@ ll coins2(int a[],int n,int change){
         }
     }
     return dp[change];
+//to find the coins too using backtracking
+//    int t=change;
+//    vector<int> result;
+//    for (int i = change; i >= 0; --i) {
+//        if(dp[i]<dp[t]){        //whereever no. of coins is decreasing
+//            result.push_back(t-i);
+//            t=i;
+//        }
+//    }
+//    reverse(result.begin(),result.end());
+//    for(auto i:result)
+//        cout<<i<<" ";
 }
 
 int main() {
