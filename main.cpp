@@ -13,32 +13,31 @@ typedef pair<int,int> pii;
 
 const int inf = 2147483647;
 const int MOD = 1e9+7;
-const int MAXN = 1e6+9;
+const int MAXN = 1e5+9;
 
+vector<int> tree[MAXN];
+int c[MAXN];
+
+
+/*
+ * if leaf node then +(n-1)*2*c[i]
+ *
+ * */
 
 int main() {
     FastIO;
-    int q;
-    cin >> q;
-    while (q--) {
-        string s;
-        cin >> s;
-        int i = 0, ans = 0;
-        while (i < s.size()) {
-            if (s[i] == '1') {
-                int flag=0;
-                i++;
-                while (i < s.size() && s[i] == '0') {
-                    flag=1;
-                    i++;
-                }
-                if (i < s.size() && s[i] == '1' && flag)
-                    ans++;
-            }
-            else
-                i++;
-        }
-        cout << ans << "\n";
+    int n;
+    cin>>n;
+    for (int i = 0; i < n; ++i) {
+        int u,v;
+        cin>>u>>v;
+        u--;
+        v--;
+        tree[u].push_back(v);
+        tree[v].push_back(u);
+    }
+    for (int i = 0; i < n; ++i) {
+        cin>>c[i];
     }
     return 0;
 }
