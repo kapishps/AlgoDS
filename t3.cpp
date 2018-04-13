@@ -20,48 +20,44 @@ const int inf = 2147483647;
 const int MOD = 1e9+7;
 const int MAXN = 1e6+9;
 
-int parent[MAXN],rnk[MAXN];
+int prime[MAXN],a[MAXN],ans[MAXN];
 
-int findparent(int x) {
-    if (x != parent[x])
-        parent[x] = findparent(parent[x]);
-    return parent[x];
+int fun(int n, int i) {
+    if(n==1)
+        return 0;
+    if(n%i==0)
+        return 1+ fun(n/i,i);
+    return 0;
 }
 
-void unionset(int x, int y) {
-    int px = findparent(x), py = findparent(y);
-    if (px != py) {
-        if (rnk[px] > rnk[py]) {
-            parent[py] = px;
-            rnk[px] += rnk[py];
+void SieveOfEratosthenes(int n) {
+    prime[0] = prime[1] = 0;
+    for (int i = 2; i * i <= n; i++) {
+        if (prime[i]==0) {
+            for (int j = i * 2; j <= n; j += i)
+                prime[j]+=fun(j,i);
+            prime[i] = 1;
         }
-        else {
-            parent[px] = py;
-            rnk[py] += rnk[px];
-        }
+        cout<<i<<" "<<prime[i]<<"\n";
     }
 }
 
-int main() {
-    Boost;
-    int n, m, x;
-    cin >> n >> m >> x;
-    for (int i = 0; i < n; ++i) {
-        parent[i] = i;
+int main(){
+    int n,q;
+    cin>>n>>q;
+    SieveOfEratosthenes(1000009);
+    for(int i=0; i< n ; i++){
+        cin>>a[i];
+        ans[i] = prime[a[i]];
     }
-    int u, v;
-    for (int i = 0; i < m; ++i) {
-        cin >> u;
-        rnk[--u] = 1;
+    sort(ans,ans+n);
+    for(int i=1; i< n ; i++){
+        ans[i] += ans[i-1];
     }
-    for (int j = 0; j < x; ++j) {
-        cin >> u >> v;
-        unionset(--u, --v);
+    while(q--){
+        int k;
+        cin>>k;
+        cout<<upper_bound(ans,ans+n,k)-ans<<"\n";
     }
-    ll ans = 0;
-    for (int i = 0; i < n; ++i) {
-        ans += rnk[findparent(i)];
-    }
-    cout << ans;
     return 0;
 }

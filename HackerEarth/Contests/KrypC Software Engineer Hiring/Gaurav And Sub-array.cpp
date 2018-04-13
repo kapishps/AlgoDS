@@ -16,40 +16,35 @@ const int inf = 2147483647;
 const int MOD = 1e9+7;
 const int MAXN = 1e5+9;
 
-ll a[MAXN],ans[MAXN];
-
+int a[MAXN];
 
 int main() {
     FastIO;
     int n,q;
     cin>>n>>q;
-
-    priority_queue<ll,vector<ll>> ax;
-    priority_queue<ll,vector<ll>,greater<ll>> in;
-
-    ll sum=0;
-
     for (int i = 0; i < n; ++i) {
         cin>>a[i];
-        ax.push(a[i]);
-        in.push(a[i]);
-        sum+=a[i];
+        a[i] = __builtin_popcount(a[i]);
     }
-    ans[0] = sum;
-    for (int i = 1; i <= n; ++i) {
-        ll t = ax.top() - in.top();
-        ans[i] = ans[i-1]- ax.top() - in.top() + t;
-        ax.pop();
-        in.pop();
-        ax.push(t);
-        in.push(t);
+    while(q--){
+        int k;
+        cin>>k;
+        int i=0,j=0;
+        int ans=inf,curr=a[j];
+        while(i<=j && j<n){
+            if(curr < k){
+                curr +=a[++j];
+            }
+            else{
+                ans = min(ans,j-i+1);
+                curr -=a[i];
+                i++;
+            }
+        }
+        if(ans==inf)
+            cout<<-1<<"\n";
+        else
+            cout<<ans<<"\n";
     }
-
-    for (int i = 0; i < q; ++i) {
-        int x;
-        cin>>x;
-        cout<<ans[x]<<"\n";
-    }
-
     return 0;
 }

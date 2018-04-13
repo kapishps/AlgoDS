@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11 -g   CMakeFiles/AlgoDS.dir/main.cpp.o  -o AlgoDS 
