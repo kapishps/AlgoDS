@@ -20,7 +20,7 @@ ll a[MAXN],pow2[MAXN];
 
 void calc_pow2(int n){
     pow2[0]=1;
-    for (int i = 1; i <=n; ++i) {
+    for (int i = 1; i < n; ++i) {
         pow2[i] =2*pow2[i-1];
         pow2[i] %=MOD;
     }
@@ -31,6 +31,8 @@ int main() {
     FastIO;
     ll t, n;
     cin >> t;
+    calc_pow2(MAXN);
+
     while (t--) {
         cin >> n;
 
@@ -38,9 +40,7 @@ int main() {
             cin >> a[i];
         }
 
-        calc_pow2(n+1);
-
-        int bits[33]={0};
+        int bits[33] = {0};
         for (int i = 0; i < n; ++i) {
             for (int j = 0; j <= 32; ++j) {
                 if (a[i] & (1LL << j))
@@ -51,11 +51,11 @@ int main() {
         ll ans = 0;
         for (int i = 0; i < 32; ++i) {
             ll afected_subsets = (pow2[n] - pow2[n - bits[i]] + MOD) % MOD;
-            ans += (pow2[i] *afected_subsets);
-            ans %=MOD;
+            ans += (pow2[i] * afected_subsets);
+            ans %= MOD;
         }
 
-        cout<<ans<<"\n";
+        cout << ans << "\n";
     }
 
     return 0;
