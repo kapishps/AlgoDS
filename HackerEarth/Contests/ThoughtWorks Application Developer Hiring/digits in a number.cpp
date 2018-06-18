@@ -20,16 +20,17 @@ const int MAXN = 1e5+9;
 int main() {
     FastIO;
     int t;
-    cin>>t;
-    while(t--){
-        ll x,y=3,z=3,ans=1;
-        cin >> x;
-        while(x > z){
-            ans++;
-            y*=3;
-            z += y;
+    cin >> t;
+    while (t--) {
+        ll n, x = 3, y = 1, z = 3;
+        cin >> n;
+        while (n > z) {
+            y++;
+            x *= 3;
+            z += x;
         }
-        cout<<ans<<"\n";
+        cout << y << "\n";
     }
+
     return 0;
 }

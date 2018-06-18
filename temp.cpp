@@ -16,45 +16,76 @@ const int inf = 2147483647;
 const int MOD = 1e9+7;
 const int MAXN = 1e5+9;
 
-int n;
+typedef struct node {
+    int s, e, val, pos, q;
 
-vector<int> graph[5];
-int ans;
-
-
-void solve(int curr, int jumps){
-    if(jumps == n && curr == 0) {
-        ans++;
-        return;
+    bool operator<(const node &n) const {
+        if (e != n.e) return e < n.e;
+        return val > n.val;
     }
-    if(jumps >=n)
-        return;
-    for(auto i:graph[curr]){
-        solve(i,jumps+1);
+
+    node() {};
+
+    node(int ss, int ee, int v, int p, int que) {
+        s = ss, e = ee, val = v, pos = p, q = que;
+    }
+} vertice;
+
+ll bit[MAXN], n, ans[3*MAXN];
+map<ll,ll> occs,last;
+vector<vertice> v;
+
+
+void update(ll x, ll val){
+    while(x <= n){
+        bit[x] += val;
+        x += x & -x;
     }
 }
 
-int wolfram(int n){
-    return (ll)(2*(ll)(pow(2,n)+ pow(-1.618033988,n+1) + pow(0.618033988,n+1))%MOD/5)%MOD;
+ll query(ll x){
+    ll ret = 0;
+    while(x > 0){
+        ret += bit[x];
+        x -= x & -x;
+    }
+    return ret;
 }
-
 
 int main() {
     FastIO;
-    int t;
-    cin>>t;
-    for (int i = 0; i < 5; ++i) {
-        graph[i].push_back((i+1)%5);
-        graph[i].push_back((i-1+5)%5);
+    int q, s, e;
+    cin>>n;
+    for (int i = 1; i <= n; i++) {
+        cin>>s;
+        v.push_back(vertice(i, i, s, -1, 0));
     }
-    while(t--){
-        n = 50 - t;
-//        solve(1,1);
-//        solve(4,1);
-//        cout<<n<<", "<<ans<<", "<<wolfram(n-1)<<"\n";
-        cout<<wolfram(n-1)<<" ";
-        ans =0;
+    cin>>q;
+    for (int i = 0; i < q; i++) {
+        cin>>s>>e;
+        v.push_back(vertice(s, e, -inf, i, 1));
     }
 
-    return 0;
+    sort(v.begin(), v.end());
+
+    for (int i = 0; i < v.size(); i++) {
+        if (v[i].q == 1) {
+            ll num = query(v[i].e) - query(v[i].s - 1);
+            ans[v[i].pos] = v[i].e - v[i].s + 1 - num;
+        } else {
+            if (present(occs, v[i].val)) {
+                if (present(last, v[i].val))
+                    update(last[v[i].val], -1);
+                update(occs[v[i].val], 2);
+                last[v[i].val] = occs[v[i].val];
+            }
+            //update(v[i].s, 1);
+            occs[v[i].val] = v[i].s;
+        }
+    }
+
+    for (ll i = 0; i < q; i++) {
+        cout<<ans[i]<<"\n";
+    }
+
 }
