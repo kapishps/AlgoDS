@@ -4,7 +4,7 @@ using namespace std;
 
 typedef long long ll;
 typedef long double ld;
-typedef pair<int,int> pii;
+typedef pair<ll,ll> pii;
 #define FastIO ios_base::sync_with_stdio(false);cin.tie(0);cout.tie(0)
 #define pb push_back
 #define mp make_pair
@@ -19,7 +19,6 @@ const int MAXN = 5e3+9;
 int a[MAXN],b[MAXN];
 bool visited[MAXN];
 vector<pii > graph[MAXN];
-
 ll dist[MAXN];
 
 void dijkstra(int n,int s) {
@@ -32,7 +31,7 @@ void dijkstra(int n,int s) {
     dist[s] = 0;
     while (!pq.empty()) {
         pii parent = pq.top();
-        int pu = parent.second, pw = parent.first;
+        ll pu = parent.second, pw = parent.first;
         pq.pop();
         if(!visited[pu]) {
             visited[pu] = 1;
