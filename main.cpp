@@ -12,68 +12,29 @@ typedef pair<int,int> pii;
 #define S second
 #define present(m,v) (m.find(v)!=m.end())
 
-const long long inf = 1e18;
+const int inf = 2147483647;
 const int MOD = 1e9+7;
-const int MAXN = 5e3+9;
+const int MAXN = 1e5+9;
 
-int a[MAXN],b[MAXN];
-bool visited[MAXN];
-vector<pii > graph[MAXN];
+set<int> chars[26];
+map<pii,int> M;
 
-ll dist[MAXN];
-
-void dijkstra(int n,int s) {
-    for (int i = 0; i <= n; i++) {
-        dist[i] = inf;
-        visited[i] = 0;
-    }
-    priority_queue<pii, vector<pii>, greater<pii> > pq;
-    pq.push(mp(0, s));
-    dist[s] = 0;
-    while (!pq.empty()) {
-        pii parent = pq.top();
-        int pu = parent.second, pw = parent.first;
-        pq.pop();
-        if(!visited[pu]) {
-            visited[pu] = 1;
-            for (auto i:graph[pu]) {
-                if (!visited[i.second] && dist[i.second] > pw + i.first) {
-                    dist[i.second] = pw + i.first;
-                    pq.push(mp(dist[i.second], i.second));
-                }
-            }
-        }
-    }
-}
 
 int main() {
     FastIO;
-    int n, m;
-    cin >> n;
+    int n, q;
+    cin >> n >> q;
+    string s[n];
     for (int i = 0; i < n; ++i) {
-        cin >> a[i];
-    }
-    for (int i = 0; i < n; ++i) {
-        cin >> b[i];
-    }
-    cin >> m;
-    int u, v, w;
-    for (int i = 0; i < m; ++i) {
-        cin >> u >> v >> w;
-        graph[u].push_back(make_pair(w, v));
-        graph[v].push_back(make_pair(w, u));
+        cin >> s[i];
+        for(auto j:s[i])
+            chars[j-'a'].insert(i);
     }
 
-    ll ans = 0;
-    for (int i = 0; i < n; ++i) {
-        if( a[i] == b[i])
-            continue;
-        dijkstra(n,a[i]);
-        if (dist[b[i]] == inf) {
-            cout << -1;
-            return 0;
-        }
-        ans += dist[b[i]];
+    while (q--) {
+        int u, v;
+        cin>>u>>v;
+        u--;
+        v--;
     }
-    cout<<ans;
 }
