@@ -35,6 +35,8 @@ void dfs(int src){
 }
 
 
+// 54/100 score
+
 int main() {
     FastIO;
     int n;

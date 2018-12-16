@@ -41,6 +41,7 @@ void dfs(int src,int parent){
         for(auto i: temp){
             dirFinalised.insert(make_pair(i,src));
         }
+        dirFinalised.insert(make_pair(src,parent));
     }
     else{
         for(auto i: temp){
