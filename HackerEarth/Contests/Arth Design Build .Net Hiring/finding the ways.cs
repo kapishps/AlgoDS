@@ -8,15 +8,15 @@ class Solution {
         long k = long.Parse(tmp[1]);
 
         Dictionary<long, long> pFactors = GetPrimeFactorsOfNo(n);
-        long ans = 1;
+        long sum = 1;
         foreach (KeyValuePair<long, long> entry in pFactors){
             if(entry.Value%k != 0){
                 long y = modular_pow(entry.Key, k-(entry.Value%k), 1000000007);
-                ans *= y;
-                ans %= 1000000007;
+                sum *= y;
+                sum %= 1000000007;
             }
         }
-        Console.WriteLine(ans);
+        Console.WriteLine(sum);
     }
 
 

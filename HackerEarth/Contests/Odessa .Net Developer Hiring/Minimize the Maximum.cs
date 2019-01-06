@@ -18,9 +18,9 @@ class Solution {
         a.Sort();
         b.Sort();
         b.Reverse();
-        int ans =0;
+        int sum =0;
         for (int i = 0; i < n; i++)
-            ans = Math.Max(ans, a[i]+b[i]);
-        Console.WriteLine(ans);
+            sum = Math.Max(sum, a[i]+b[i]);
+        Console.WriteLine(sum);
     }
 }

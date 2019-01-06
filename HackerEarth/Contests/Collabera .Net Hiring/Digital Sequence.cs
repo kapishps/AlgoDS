@@ -25,10 +25,10 @@ class Solution {
                         cnt[j]++;
             }
 
-            int ans = 0;
+            int sum = 0;
             for (int i = 0; i < 10; i++)
-                ans = Math.Max(ans, cnt[i]);
-            Console.WriteLine(ans);
+                sum = Math.Max(sum, cnt[i]);
+            Console.WriteLine(sum);
         }
     }
 }

@@ -17,7 +17,7 @@ def main():
         for i in range(1,63):
             powk.append(powk[i-1]*k)
             if powk[i] > 1e18:
-                break;
+                break
 
         c = 2
         while n >= 0:
