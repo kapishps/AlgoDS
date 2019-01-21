@@ -35,7 +35,6 @@ int main() {
         if(max_so_far <= max_ending_here){
             max_so_far = max_ending_here;
             M[max_ending_here]++;
-            cout<<i<<" "<<max_ending_here<<"\n";
         }
     }
 

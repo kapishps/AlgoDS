@@ -15,31 +15,32 @@ typedef pair<int, int> pii;
 
 const int inf = 2147483647;
 const int MOD = 1e9+7;
-const int MAXN = 3e5+9;
+const int MAXN = 1e5+9;
 
-ll arr[MAXN];
-map<ll,ll> M;
 
 int main() {
     FastIO;
     int n;
     cin >> n;
+    int day[31] = {0}, arr[n];
     for (int i = 0; i < n; ++i) {
         cin >> arr[i];
+        day[arr[i]]++;
     }
 
-    ll max_ending_here = 0, max_so_far = 0;
+    int dp[31] = {0};
+    for (int i = 1; i < 31; ++i) {
+        if (day[i] == 1)
+            dp[i] = dp[i - 1] + 199;
+        else
+            dp[i] = dp[i - 1];
 
-    for (int i = 0; i < n; ++i) {
-        max_ending_here = max(arr[i], max_ending_here + arr[i]);
-        if(max_so_far <= max_ending_here){
-            max_so_far = max_ending_here;
-            M[max_ending_here]++;
-            cout<<i<<" "<<max_ending_here<<"\n";
-        }
+        if (i >= 7)
+            dp[i] = min(dp[i], dp[i - 7] + 699);
+        if (i >= 30)
+            dp[i] = min(dp[i], dp[i - 30] + 2499);
     }
 
-    cout<<max_so_far<<" "<< M[max_so_far];
-
+    cout << dp[30];
     return 0;
 }
