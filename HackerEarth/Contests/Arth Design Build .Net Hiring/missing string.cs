@@ -67,12 +67,12 @@ class Solution {
     }
 
     public static string CharCombine(char c0, char c1, char c2, char c3){
-        char[] arr = new char[4];
-        arr[0] = c0;
-        arr[1] = c1;
-        arr[2] = c2;
-        arr[3] = c3;
-        return new string(arr).Trim();
+        char[] nodes = new char[4];
+        nodes[0] = c0;
+        nodes[1] = c1;
+        nodes[2] = c2;
+        nodes[3] = c3;
+        return new string(nodes).Trim();
     }
 
 
