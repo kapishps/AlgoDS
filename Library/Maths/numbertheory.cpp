@@ -46,17 +46,19 @@ ll mul_mod(ll a, ll b, ll M = MOD) {        //(a * b) % M
     return res % M;
 }
 
-//Modular Exponentiation
-ll power_mod(ll a, ll p, ll M = MOD) {      //n^p % M
-    ll x = a, res = 1;
-    while (p) {
-        if (p & 1)
-            res = mul_mod(res, x, M);
-        x = mul_mod(x, x, M);
-        p >>= 1LL;
+//Modular Exponentiation O(log pow)
+ll power_mod(ll num, ll pow, ll M = MOD) {        //n^p % M
+    ll ret = 1;
+    while (pow) {
+        if (pow & 1) {
+            ret = (ret * num) % M;
+        }
+        pow >>= 1LL;
+        num = (num * num) % M;
     }
-    return res;
+    return ret;
 }
+
 
 ll GCD(ll a, ll b) {
     if(b==0)
@@ -68,6 +70,17 @@ ll LCM(ll a, ll b) {
     return (a*b)/GCD(a, b);
 }
 
+
+/*
+ The Extended Euclidean Algorithm, similarly to its basic variant,
+ calculates the Greatest Common Divisor (GCD) of two integers, a and b.
+ However, it also computes two integers, x and y, such that a*x + b*y = gcd(a, b).
+
+ This is the preferred method for calculating the modular inverse of a number,
+ as well as partitioning an integer into subgroups (as per the Chinese Remainder Theorem).
+
+ Complexity:    O(log N)
+*/
 ll d, x, y;
 void extendedEuclid(ll a, ll b) {       //Ax + By = GCD(A, B) = d
     if(b == 0) {
