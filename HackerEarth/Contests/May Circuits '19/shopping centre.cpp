@@ -65,24 +65,9 @@ bool check(ld x, ld y, ld u, ld v, ld r) {
         }
     }
 
-
     if (minDist - r < -TOLERANCE)
         return 0;
     return 1;
-}
-
-
-int pointsToLine2(ld x, ld y, ld u, ld v, ld &m, ld &c) {
-    if (fabsl(x - u) < TOLERANCE) {          // special case: vertical line
-        m = inf;                    // l contains m = INF and c = x_value
-        c = x;                  // to denote vertical line x = x_value
-        return 0;   // we need this return variable to differentiate result
-    }
-    else {
-        m = (y - v) / (x - u);
-        c = y - m * x;
-        return 1;     // l contains m and c of the line equation y = mx + c
-    }
 }
 
 
@@ -106,22 +91,16 @@ int main() {
 //        inside the circle
 //        cout<<"inside"<<"\n";
 
-        ld m, c;
-        if (pointsToLine2(x, y, u, v, m, c)) {
-            ld l1 = dist(x, y, 0.0, 0.0), l2 = dist(u, v, 0.0, 0.0);
-            ld angle1 = acosl(r / l1), angle2 = acosl(r / l2);
-            ld arc = min(fabsl(gettheta(x, y) + angle1 - gettheta(u, v) - angle2),
-                         fabsl(gettheta(x, y) - angle1 - gettheta(u, v) - angle2));
-            arc = min(fabsl(gettheta(x, y) + angle1 - gettheta(u, v) + angle2), arc);
-            arc = min(fabsl(gettheta(x, y) - angle1 - gettheta(u, v) + angle2), arc);
+        ld l1 = dist(x, y, 0.0, 0.0), l2 = dist(u, v, 0.0, 0.0);
+        ld angle1 = acosl(r / l1), angle2 = acosl(r / l2);
+        ld arc = min(fabsl(gettheta(x, y) + angle1 - gettheta(u, v) - angle2),
+                     fabsl(gettheta(x, y) - angle1 - gettheta(u, v) - angle2));
+        arc = min(fabsl(gettheta(x, y) + angle1 - gettheta(u, v) + angle2), arc);
+        arc = min(fabsl(gettheta(x, y) - angle1 - gettheta(u, v) + angle2), arc);
 
-            ans += sqrtl((l1 * l1) - (r * r));
-            ans += sqrtl((l2 * l2) - (r * r));
-            ans += r * arc;
-        }
-        else {
-            assert(1 == 2);
-        }
+        ans += sqrtl((l1 * l1) - (r * r));
+        ans += sqrtl((l2 * l2) - (r * r));
+        ans += r * arc;
     }
 
     cout << std::fixed << std::showpoint;
