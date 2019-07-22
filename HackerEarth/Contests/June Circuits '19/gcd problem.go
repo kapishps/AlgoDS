@@ -26,11 +26,11 @@ func power_mod(num int, pow int, m int) int {
 func solve(n int) []int {
 	f := make([]int, MAXN)
 	for i := 1; i <= n; i++ {
-		for d := 1; d*d <= i; d++ {
-			if i%d == 0 {
-				f[d]++
-				if d*d < i {
-					f[i/d]++
+		for arr := 1; arr*arr <= i; arr++ {
+			if i%arr == 0 {
+				f[arr]++
+				if arr*arr < i {
+					f[i/arr]++
 				}
 			}
 		}

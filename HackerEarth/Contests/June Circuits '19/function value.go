@@ -11,13 +11,13 @@ const inf int = 2147483647
 const MOD int = 1e9 + 7
 const MAXN int = 1e5 + 9
 
-var d int
+var arr []int
 var x int
 var y int
 
 func extendedEuclid(a int, b int) {
 	if b == 0 {
-		d = a
+		arr = a
 		x = 1
 		y = 0
 	} else {
@@ -79,7 +79,7 @@ func solve(n int, mod int) int {
 				ans += 18 * gpsum(9, (n-2)/4, mod)
 				ans += 2 * (n / 4)
 			}
-			ans += 1
+			ans++
 			ans %= mod
 		}
 	} else {
