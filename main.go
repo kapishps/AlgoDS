@@ -7,9 +7,12 @@ import (
 	"strconv"
 )
 
-const inf int = 2147483647
-const MOD int = 1e9 + 7
-const MAXN int = 1e5 + 9
+// Constants
+const (
+	inf  int = 2147483647
+	MOD  int = 1e9 + 7
+	MAXN int = 1e5 + 9
+)
 
 var arr [MAXN]int
 
@@ -24,6 +27,7 @@ func main() {
 		n, _ := strconv.Atoi(input.Text())
 		fmt.Println("Hello World!")
 		fmt.Printf("%v", n)
+
 		t--
 	}
 }
