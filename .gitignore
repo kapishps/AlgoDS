@@ -102,3 +102,16 @@ fabric.properties
 
 # CMake
 cmake-build-*/
+
+# Environments
+# .env
+.env/
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pythonenv*
+
+*.out
